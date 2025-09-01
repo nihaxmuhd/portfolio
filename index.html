@@ -1,117 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Muhammed Nihad | Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/jpg" href="{% static 'images/profile.jpg' %}">
+  <link rel="icon" type="image/jpg" href="profile.jpg" />
+  <!-- Optional: Custom Tailwind config for better fonts -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-slate-900 text-white font-sans">
+<body class="bg-slate-900 text-white font-sans leading-relaxed">
 
   <!-- Navbar -->
-  <nav class="bg-slate-800 shadow-md">
+  <nav class="bg-slate-800 shadow-md sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center py-4">
-      <h1 class="text-2xl font-bold">Nihad.dev</h1>
+      <a href="#" class="text-2xl font-bold text-red-400">Nihad.dev</a>
+
       <!-- Desktop Menu -->
-      <div class="hidden md:flex space-x-6">
-        <a href="#about" class="hover:text-red-400">About</a>
-        <a href="#skills" class="hover:text-red-400">Skills</a>
-        <a href="#projects" class="hover:text-red-400">Projects</a>
-        <a href="#contact" class="hover:text-red-400">Contact</a>
+      <div class="hidden md:flex space-x-8">
+        <a href="#about" class="hover:text-red-400 transition duration-300">About</a>
+        <a href="#skills" class="hover:text-red-400 transition duration-300">Skills</a>
+        <a href="#projects" class="hover:text-red-400 transition duration-300">Projects</a>
+        <a href="#contact" class="hover:text-red-400 transition duration-300">Contact</a>
       </div>
-      <!-- Mobile Button -->
-      <button id="menu-btn" class="md:hidden focus:outline-none">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2"
+
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" class="md:hidden focus:outline-none focus:ring-2 focus:ring-red-500 p-2 rounded">
+        <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
+
     <!-- Mobile Menu -->
-    <div id="menu" class="hidden md:hidden flex flex-col space-y-4 px-6 pb-6 bg-slate-800">
-      <a href="#about" class="hover:text-red-400">About</a>
-      <a href="#skills" class="hover:text-red-400">Skills</a>
-      <a href="#projects" class="hover:text-red-400">Projects</a>
-      <a href="#contact" class="hover:text-red-400">Contact</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-800 px-6 py-4 space-y-4 border-t border-slate-700">
+      <a href="#about" class="block hover:text-red-400 transition">About</a>
+      <a href="#skills" class="block hover:text-red-400 transition">Skills</a>
+      <a href="#projects" class="block hover:text-red-400 transition">Projects</a>
+      <a href="#contact" class="block hover:text-red-400 transition">Contact</a>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section class="flex flex-col items-center text-center py-20 px-4">
-    <img src= "profile.jpg" alt="Profile Picture"
-         class="w-40 h-40 rounded-full border-4 border-red-500 mb-6 shadow-lg">
-    <h2 class="mt-6 text-4xl font-extrabold">Hello, I'm <span class="text-red-500">Muhammed Nihad</span></h2>
-    <p class="text-lg text-gray-300 mt-2">Software Developer | Python & Django Enthusiast</p>
-    <div class="mt-6 space-x-4">
+  <section class="flex flex-col items-center text-center py-24 px-6">
+    <img src="profile.jpg" alt="Muhammed Nihad - Profile Picture"
+         class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-red-500 mb-6 shadow-lg object-cover" />
+
+    <h2 class="text-3xl md:text-5xl font-extrabold mb-3">
+      Hello, I'm <span class="text-red-500">Muhammed Nihad</span>
+    </h2>
+    <p class="text-lg text-gray-300 mb-6 max-w-lg">
+      Software Developer | Python & Django Enthusiast
+    </p>
+    <div class="space-x-4">
       <a href="mailto:muhammadnihad16@gmail.com"
-         class="bg-red-500 px-5 py-2 rounded-lg hover:bg-red-600">Email</a>
+         class="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg transition font-medium shadow">
+        Email Me
+      </a>
       <a href="tel:+919562733638"
-         class="bg-slate-700 px-5 py-2 rounded-lg hover:bg-slate-600">Call</a>
+         class="inline-block bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-lg transition font-medium">
+        Call Me
+      </a>
     </div>
   </section>
 
   <!-- About -->
-  <section id="about" class="py-20 bg-slate-800 text-center px-4">
-    <h3 class="text-3xl font-bold mb-4">About Me</h3>
-    <p class="max-w-2xl mx-auto text-gray-300">
-      I am a passionate developer learning Django and Python OOP concepts.
-      My focus is on building scalable, clean and efficient web applications.
-    </p>
+  <section id="about" class="py-20 bg-slate-800 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-bold mb-6">About Me</h3>
+      <p class="text-lg text-gray-300 leading-relaxed">
+        I am a passionate developer focused on mastering <strong>Python</strong> and <strong>Django</strong>, 
+        with a strong interest in object-oriented programming and full-stack development. 
+        I aim to build clean, scalable, and user-friendly web applications with modern tools and best practices.
+      </p>
+    </div>
   </section>
 
   <!-- Skills -->
-  <section id="skills" class="py-20 text-center px-4">
-    <h3 class="text-3xl font-bold mb-8">Skills</h3>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-      <div class="p-4 bg-slate-800 rounded-lg shadow">🐍 Python</div>
-      <div class="p-4 bg-slate-800 rounded-lg shadow">🌐 Django</div>
-      <div class="p-4 bg-slate-800 rounded-lg shadow">💻 HTML & CSS</div>
-      <div class="p-4 bg-slate-800 rounded-lg shadow">⚡ Git & GitHub</div>
+  <section id="skills" class="py-20 px-6">
+    <h3 class="text-3xl font-bold text-center mb-10">Skills</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+      <div class="p-5 bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition flex flex-col items-center">
+        <span class="text-2xl mb-2">🐍</span>
+        <span>Python</span>
+      </div>
+      <div class="p-5 bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition flex flex-col items-center">
+        <span class="text-2xl mb-2">🌐</span>
+        <span>Django</span>
+      </div>
+      <div class="p-5 bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition flex flex-col items-center">
+        <span class="text-2xl mb-2">💻</span>
+        <span>HTML & CSS</span>
+      </div>
+      <div class="p-5 bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition flex flex-col items-center">
+        <span class="text-2xl mb-2">⚡</span>
+        <span>Git & GitHub</span>
+      </div>
     </div>
   </section>
 
   <!-- Projects -->
-  <section id="projects" class="py-20 bg-slate-800 text-center px-4">
-    <h3 class="text-3xl font-bold mb-8">Projects</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-      <div class="bg-slate-700 p-6 rounded-lg shadow-lg">
-        <h4 class="text-xl font-semibold">Portfolio Website</h4>
-        <p class="text-gray-300 mt-2">A responsive portfolio built with Django & Tailwind.</p>
-        <a href="https://github.com/nihaxmihd" class="text-red-400 hover:underline">View Code</a>
+  <section id="projects" class="py-20 bg-slate-800 px-6">
+    <h3 class="text-3xl font-bold text-center mb-10">Projects</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+      <div class="bg-slate-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+        <h4 class="text-xl font-semibold mb-2">Portfolio Website</h4>
+        <p class="text-gray-300 mb-4">
+          A responsive portfolio built with Django and Tailwind CSS for a clean, modern look.
+        </p>
+        <a href="https://github.com/nihaxmihd" target="_blank"
+           class="text-red-400 hover:underline font-medium inline-flex items-center">
+          View Code →
+        </a>
       </div>
-      <div class="bg-slate-700 p-6 rounded-lg shadow-lg">
-        <h4 class="text-xl font-semibold">Banking App</h4>
-        <p class="text-gray-300 mt-2">A simple banking system with authentication & CRUD features.</p>
-        <a href="https://github.com/nihaxmihd" class="text-red-400 hover:underline">View Code</a>
+      <div class="bg-slate-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+        <h4 class="text-xl font-semibold mb-2">Banking App</h4>
+        <p class="text-gray-300 mb-4">
+          A simple banking system with user authentication, transactions, and CRUD operations.
+        </p>
+        <a href="https://github.com/nihaxmihd" target="_blank"
+           class="text-red-400 hover:underline font-medium inline-flex items-center">
+          View Code →
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="py-20 text-center px-4">
-    <h3 class="text-3xl font-bold mb-4">Find Me On</h3>
-    <div class="space-x-6">
-      <a href="https://github.com/nihaxmihd" target="_blank" class="text-red-400 hover:underline">GitHub</a>
-      <a href="https://linkedin.com/in/muhammad-nihad-" target="_blank" class="text-red-400 hover:underline">LinkedIn</a>
+  <section id="contact" class="py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-bold mb-6">Get In Touch</h3>
+      <p class="text-gray-300 mb-10">Have a project in mind? Let’s connect!</p>
+
+      <!-- Contact Form -->
+      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6 max-w-lg mx-auto">
+        <!-- Access Key (Replace with your own) -->
+        <input type="hidden" name="access_key" value="3f783068-2921-4a23-ab0b-9b91d3eaa1fa">
+
+        <!-- Name -->
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          required
+          class="w-full px-5 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        />
+
+        <!-- Email -->
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          required
+          class="w-full px-5 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        />
+
+        <!-- Message -->
+        <textarea
+          name="message"
+          rows="5"
+          placeholder="Your Message"
+          required
+          class="w-full px-5 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        ></textarea>
+
+        <!-- Honeypot -->
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+        <!-- Redirect (Optional) -->
+        <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition shadow-md hover:shadow-lg">
+          Send Message
+        </button>
+      </form>
+
+      <!-- Social Links -->
+      <div class="mt-12 space-x-8">
+        <a href="https://github.com/nihaxmihd" target="_blank"
+           class="text-gray-400 hover:text-red-400 transition text-lg">GitHub</a>
+        <a href="https://linkedin.com/in/muhammad-nihad-" target="_blank"
+           class="text-gray-400 hover:text-red-400 transition text-lg">LinkedIn</a>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-slate-800 text-center py-6 mt-10">
-    <p class="text-gray-400">© 2025 Muhammed Nihad. All rights reserved.</p>
+  <footer class="bg-slate-800 text-center py-6">
+    <p class="text-gray-400">
+      © <span id="year"></span> Muhammed Nihad. All rights reserved.
+    </p>
   </footer>
 
-  <!-- Script for Mobile Menu -->
+  <!-- Script for Mobile Menu & Year -->
   <script>
+    // Mobile Menu Toggle
     const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu');
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('menu-icon');
+
     btn.addEventListener('click', () => {
       menu.classList.toggle('hidden');
+      // Optional: animate icon (hamburger ↔ cross)
     });
-  </script>
 
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
-
