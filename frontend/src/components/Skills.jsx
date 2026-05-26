@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { animate, motion, useInView, useMotionValue, useMotionValueEvent } from 'framer-motion';
 import { Edit, Plus, Save, Sparkles, Trash2, X } from 'lucide-react';
 import { api } from '../api';
 
@@ -26,27 +27,54 @@ const DEFAULTS = [
   { id: 'd13', name: 'AI-assisted Development', category: 'Tools/Others', proficiency: 95, order: 4 },
 ];
 
-function SkillRow({ skill, gradientClass, isAdmin, onEdit, onDelete }) {
+function AnimatedPercent({ value, isVisible }) {
+  const motionValue = useMotionValue(0);
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useMotionValueEvent(motionValue, 'change', latest => {
+    setDisplayValue(Math.round(latest));
+  });
+
+  useEffect(() => {
+    if (!isVisible) return undefined;
+
+    const controls = animate(motionValue, value, {
+      duration: 1.1,
+      ease: [0.22, 1, 0.36, 1],
+    });
+
+    return () => controls.stop();
+  }, [isVisible, motionValue, value]);
+
+  return <span>{displayValue}%</span>;
+}
+
+function SkillRow({ skill, gradientClass, isAdmin, onEdit, onDelete, isVisible }) {
   return (
-    <div className="space-y-2">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
+      className="group space-y-2.5 rounded-[1.25rem] px-3 py-3 transition-colors hover:bg-slate-50/90 dark:hover:bg-slate-950/45"
+    >
       <div className="flex items-center justify-between gap-3">
         <span className="min-w-0 truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{skill.name}</span>
         <div className="flex shrink-0 items-center gap-2">
           <span className={`text-xs font-bold bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>
-            {skill.proficiency}%
+            <AnimatedPercent value={skill.proficiency} isVisible={isVisible} />
           </span>
           {isAdmin && (
             <div className="flex items-center gap-1">
               <button
                 onClick={() => onEdit(skill)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors hover:text-violet-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-violet-400"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all hover:scale-105 hover:bg-violet-50 hover:text-violet-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-violet-500/10 dark:hover:text-violet-400"
                 title="Edit"
               >
                 <Edit className="h-3.5 w-3.5" />
               </button>
               <button
                 onClick={() => onDelete(skill.id)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-rose-500 transition-colors hover:text-rose-600 dark:bg-slate-800 dark:text-rose-400"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-rose-500 transition-all hover:scale-105 hover:bg-rose-50 hover:text-rose-600 dark:bg-slate-800 dark:text-rose-400 dark:hover:bg-rose-500/10"
                 title="Delete"
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -55,10 +83,16 @@ function SkillRow({ skill, gradientClass, isAdmin, onEdit, onDelete }) {
           )}
         </div>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-        <div className={`h-full rounded-full bg-gradient-to-r ${gradientClass} transition-all duration-700`} style={{ width: `${skill.proficiency}%` }} />
+
+      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={isVisible ? { width: `${skill.proficiency}%` } : { width: 0 }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${gradientClass} shadow-[0_0_18px_rgba(139,92,246,0.25)] transition-all group-hover:brightness-110`}
+        />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -88,6 +122,53 @@ function InlineEditForm({ skill, onSave, onCancel }) {
         </button>
       </div>
     </div>
+  );
+}
+
+function SkillCategoryCard({ category, list, gradient, isAdmin, editingId, setEditingId, handleUpdate, handleDelete }) {
+  const cardRef = useRef(null);
+  const isVisible = useInView(cardRef, { once: true, amount: 0.3 });
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.55, ease: 'easeOut' }}
+      whileHover={{ y: -4 }}
+      className="glass-card rounded-[2rem] p-6 sm:p-7"
+    >
+      <div className="mb-6 flex items-center justify-between gap-3 border-b border-slate-200/70 pb-4 dark:border-white/10">
+        <h3 className="font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white">{category}</h3>
+        <span className="inline-flex min-w-9 items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+          {list.length}
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        {list.length > 0 ? (
+          list.map(skill => (
+            <div key={skill.id}>
+              {editingId === skill.id ? (
+                <InlineEditForm skill={skill} onSave={handleUpdate} onCancel={() => setEditingId(null)} />
+              ) : (
+                <SkillRow
+                  skill={skill}
+                  gradientClass={gradient}
+                  isAdmin={isAdmin}
+                  onEdit={item => setEditingId(item.id)}
+                  onDelete={handleDelete}
+                  isVisible={isVisible}
+                />
+              )}
+            </div>
+          ))
+        ) : (
+          <p className="text-sm italic text-slate-500 dark:text-slate-400">No skills in this category yet.</p>
+        )}
+      </div>
+    </motion.div>
   );
 }
 
@@ -248,36 +329,17 @@ export default function Skills({ isAdmin }) {
               const list = grouped[category] || [];
 
               return (
-                <div key={category} className="glass-card rounded-[2rem] p-6 sm:p-7">
-                  <div className="mb-6 flex items-center justify-between gap-3 border-b border-slate-200/70 pb-4 dark:border-white/10">
-                    <h3 className="font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white">{category}</h3>
-                    <span className="inline-flex min-w-9 items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
-                      {list.length}
-                    </span>
-                  </div>
-
-                  <div className="space-y-5">
-                    {list.length > 0 ? (
-                      list.map(skill => (
-                        <div key={skill.id}>
-                          {editingId === skill.id ? (
-                            <InlineEditForm skill={skill} onSave={handleUpdate} onCancel={() => setEditingId(null)} />
-                          ) : (
-                            <SkillRow
-                              skill={skill}
-                              gradientClass={gradient}
-                              isAdmin={isAdmin}
-                              onEdit={item => setEditingId(item.id)}
-                              onDelete={handleDelete}
-                            />
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-sm italic text-slate-500 dark:text-slate-400">No skills in this category yet.</p>
-                    )}
-                  </div>
-                </div>
+                <SkillCategoryCard
+                  key={category}
+                  category={category}
+                  list={list}
+                  gradient={gradient}
+                  isAdmin={isAdmin}
+                  editingId={editingId}
+                  setEditingId={setEditingId}
+                  handleUpdate={handleUpdate}
+                  handleDelete={handleDelete}
+                />
               );
             })}
           </div>

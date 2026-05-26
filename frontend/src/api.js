@@ -198,4 +198,13 @@ export const api = {
     });
     return handleResponse(res);
   },
+
+  chat: async ({ message, history }) => {
+    const res = await fetch(`${BASE_URL}/api/chat/`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ message, history }),
+    });
+    return handleResponse(res);
+  },
 };

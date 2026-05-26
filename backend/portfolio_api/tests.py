@@ -5,6 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
+from unittest.mock import patch
 from .models import Project, ProjectImage, Experience, Skill
 
 class PortfolioAPIPermissionsTestCase(TestCase):
@@ -143,4 +144,31 @@ class PortfolioAPIPermissionsTestCase(TestCase):
         self.project.refresh_from_db()
         self.assertEqual(self.project.project_images.count(), 2)
         self.assertEqual(len(response.data['gallery_images']), 2)
+
+
+class ChatAPIViewTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = reverse('api_chat')
+
+    @patch('portfolio_api.views.generate_chat_reply')
+    def test_chat_returns_reply(self, mock_generate):
+        mock_generate.return_value = 'Nihad builds Django and React applications.'
+        response = self.client.post(self.url, {
+            'message': 'Tell me about Nihad',
+            'history': [{'role': 'user', 'text': 'Hi'}],
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['reply'], 'Nihad builds Django and React applications.')
+
+    def test_chat_requires_message(self):
+        response = self.client.post(self.url, {'message': '   '}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('portfolio_api.views.generate_chat_reply')
+    def test_chat_returns_safe_error_payload(self, mock_generate):
+        mock_generate.side_effect = Exception('unexpected')
+        response = self.client.post(self.url, {'message': 'Hello'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertIn('reply', response.data)
 

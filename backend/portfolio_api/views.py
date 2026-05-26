@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
+from django.utils import timezone
 from .models import Project, Experience, Skill
 from .serializers import ProjectSerializer, ExperienceSerializer, SkillSerializer
+from .gemini_client import GeminiChatError, generate_chat_reply
 
 # PLACEHOLDER: Custom analytics or visitor logging can be added in API hooks here
 
@@ -65,4 +67,40 @@ class CustomAuthToken(APIView):
         return Response({
             'non_field_errors': ['Unable to log in with provided credentials.']
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChatAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        message = str(request.data.get('message', '')).strip()
+        history = request.data.get('history') or []
+
+        if not message:
+            return Response({
+                'error': 'Please enter a message before sending.',
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        if not isinstance(history, list):
+            history = []
+
+        try:
+            reply = generate_chat_reply(message=message, history=history[-8:])
+        except GeminiChatError as exc:
+            return Response({
+                'error': str(exc),
+                'reply': "I couldn't answer that just now, but you can still explore Nihad's projects or use the contact section to reach out directly.",
+                'timestamp': timezone.now().isoformat(),
+            }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception:
+            return Response({
+                'error': 'Something went wrong while talking to the AI assistant.',
+                'reply': "I'm having trouble responding right now. Please try again soon or check the portfolio sections directly.",
+                'timestamp': timezone.now().isoformat(),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({
+            'reply': reply,
+            'timestamp': timezone.now().isoformat(),
+        }, status=status.HTTP_200_OK)
 

@@ -8,6 +8,7 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
+import ChatAssistant from './components/chat/ChatAssistant';
 import { api } from './api';
 
 function App() {
@@ -64,6 +65,8 @@ function App() {
         onClose={() => setIsLoginOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+
+      <ChatAssistant />
     </div>
   );
 }
