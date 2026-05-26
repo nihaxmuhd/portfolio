@@ -3,38 +3,7 @@ import { motion } from 'framer-motion';
 import { Briefcase, Calendar, Edit, Plus, Sparkles, Trash2, X } from 'lucide-react';
 import { api } from '../api';
 
-const DEFAULTS = [
-  {
-    id: 'd1',
-    company_name: 'Velmora Leather (Freelance)',
-    role: 'Full-Stack Developer',
-    start_date: '2026-01-15',
-    end_date: '',
-    is_current: true,
-    description: 'Designed and developed a premium luxury landing page and backend.\nImplemented scroll-linked animations with GSAP and canvas.\nConnected Django REST endpoints with a React single-page application.',
-    order: 1,
-  },
-  {
-    id: 'd2',
-    company_name: 'Zetca Live',
-    role: 'Software Engineer Intern',
-    start_date: '2025-09-01',
-    end_date: '2025-12-15',
-    is_current: false,
-    description: 'Modernized administrative dashboards using React and responsive UI patterns.\nImplemented JWT authentication flow and token refresh handling.\nRefactored frontend state to stay in sync with REST API endpoints.',
-    order: 2,
-  },
-  {
-    id: 'd3',
-    company_name: 'Startup Incubator',
-    role: 'Business Management Intern',
-    start_date: '2024-06-01',
-    end_date: '2024-08-31',
-    is_current: false,
-    description: 'Bridged communication between founders and development teams.\nLed planning sessions and translated goals into technical user stories.\nImproved workflows and reduced manual data entry overhead each week.',
-    order: 3,
-  },
-];
+
 
 const formatDate = value => {
   if (!value) return '';
@@ -134,18 +103,37 @@ export default function Experience({ isAdmin }) {
   const [description, setDescription] = useState('');
   const [order, setOrder] = useState(0);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await api.getExperiences();
-        setExperiences(data?.length ? data : DEFAULTS);
-      } catch {
-        setExperiences(DEFAULTS);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+useEffect(() => {
+  (async () => {
+    try {
+      const data =
+        await api.getExperiences();
+
+      setExperiences(
+        Array.isArray(
+          data
+        )
+          ? data
+          : []
+      );
+    } catch (
+      error
+    ) {
+      console.error(
+        'Experience fetch failed:',
+        error
+      );
+
+      setExperiences(
+        []
+      );
+    } finally {
+      setLoading(
+        false
+      );
+    }
+  })();
+}, []);
 
   const resetForm = () => {
     setCompany('');
