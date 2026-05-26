@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 # PLACEHOLDER: You can extend these models with more fields if needed (e.g., tags, certificates)
@@ -19,6 +20,22 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(Project, related_name='project_images', on_delete=models.CASCADE)
+    image = models.FileField(
+        upload_to='projects/',
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif'])],
+    )
+    order = models.IntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"Image {self.pk} for {self.project.title}"
 
 
 

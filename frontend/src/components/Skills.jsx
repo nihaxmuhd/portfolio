@@ -139,14 +139,22 @@ export default function Skills({ isAdmin }) {
 
   const handleUpdate = async updated => {
     try {
-      const saved = await api.updateSkill(updated.id, {
+      const payload = {
         name: updated.name,
         category: updated.category,
         proficiency: updated.proficiency,
         order: updated.order,
-      });
+      };
+      const isPersistedSkill = !String(updated.id).startsWith('d');
+      const saved = isPersistedSkill
+        ? await api.updateSkill(updated.id, payload)
+        : await api.createSkill(payload);
 
-      setSkills(prev => prev.map(item => (item.id === saved.id ? saved : item)));
+      setSkills(prev => (
+        isPersistedSkill
+          ? prev.map(item => (item.id === saved.id ? saved : item))
+          : [...prev.filter(item => item.id !== updated.id && !String(item.id).startsWith('d')), saved]
+      ));
       setEditingId(null);
     } catch (err) {
       alert(`Error: ${err.message}`);
@@ -259,7 +267,7 @@ export default function Skills({ isAdmin }) {
                               skill={skill}
                               gradientClass={gradient}
                               isAdmin={isAdmin}
-                              onEdit={setEditingId}
+                              onEdit={item => setEditingId(item.id)}
                               onDelete={handleDelete}
                             />
                           )}

@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .models import Project, Experience, Skill
@@ -23,6 +24,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAdminOrReadOnly]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
 
 class ExperienceViewSet(viewsets.ModelViewSet):

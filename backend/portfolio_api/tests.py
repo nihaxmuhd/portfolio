@@ -1,10 +1,11 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
-from .models import Project, Experience, Skill
+from .models import Project, ProjectImage, Experience, Skill
 
 class PortfolioAPIPermissionsTestCase(TestCase):
     def setUp(self):
@@ -92,4 +93,54 @@ class PortfolioAPIPermissionsTestCase(TestCase):
         response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Project.objects.count(), 0)
+
+    def test_admin_user_can_create_project_with_uploaded_images(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.admin_token.key)
+        payload = {
+            'title': 'Gallery Project',
+            'description': 'Multipart upload check',
+            'tech_stack': 'React, Django',
+            'status': 'Completed',
+            'project_progress': 100,
+            'order': 5,
+            'new_images': [
+                SimpleUploadedFile('cover-one.jpg', b'filecontent-1', content_type='image/jpeg'),
+                SimpleUploadedFile('cover-two.png', b'filecontent-2', content_type='image/png'),
+            ],
+        }
+
+        response = self.client.post(self.list_url, payload, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ProjectImage.objects.filter(project_id=response.data['id']).count(), 2)
+        self.assertEqual(len(response.data['gallery_images']), 2)
+
+    def test_admin_user_can_update_project_gallery(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.admin_token.key)
+        existing_image = ProjectImage.objects.create(
+            project=self.project,
+            image=SimpleUploadedFile('existing.jpg', b'existing-file', content_type='image/jpeg'),
+            order=0,
+        )
+        payload = {
+            'title': 'Updated Title By Admin',
+            'description': 'Updated desc',
+            'tech_stack': 'Python, DRF',
+            'github_url': 'https://github.com',
+            'live_url': '',
+            'image_url': '',
+            'status': 'Completed',
+            'project_progress': 100,
+            'order': 1,
+            'sync_existing_images': '1',
+            'existing_image_ids': [str(existing_image.id)],
+            'new_images': [
+                SimpleUploadedFile('replacement.webp', b'replacement-file', content_type='image/webp'),
+            ],
+        }
+
+        response = self.client.put(self.detail_url, payload, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.project.refresh_from_db()
+        self.assertEqual(self.project.project_images.count(), 2)
+        self.assertEqual(len(response.data['gallery_images']), 2)
 

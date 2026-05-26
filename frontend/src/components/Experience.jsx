@@ -184,7 +184,9 @@ export default function Experience({ isAdmin }) {
     };
 
     try {
-      if (editingId) {
+      const isPersistedExperience = editingId && !String(editingId).startsWith('d');
+
+      if (isPersistedExperience) {
         const updated = await api.updateExperience(editingId, payload);
         setExperiences(prev => prev.map(item => (item.id === editingId ? updated : item)));
       } else {
