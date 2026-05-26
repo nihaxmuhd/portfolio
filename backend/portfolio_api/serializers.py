@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Experience, Project, ProjectImage, Skill
+from .models import Resume
 
 # PLACEHOLDER: Define extra validation or field formatting logic here if required
 
@@ -106,3 +107,46 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = '__all__'
+
+
+
+
+class ResumeSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(required=True)
+
+    class Meta:
+        model = Resume
+        fields = [
+            'id',
+            'file',
+            'updated_at'
+        ]
+
+    def to_representation(
+        self,
+        instance
+    ):
+        data = super().to_representation(
+            instance
+        )
+
+        request = self.context.get(
+            'request'
+        )
+
+        if (
+            instance.file
+        ):
+            file_url = (
+                instance.file.url
+            )
+
+            data['file'] = (
+                request.build_absolute_uri(
+                    file_url
+                )
+                if request
+                else file_url
+            )
+
+        return data

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
+from pathlib import Path
+from decouple import config
 
 
 def load_env_file(env_path):
@@ -157,6 +159,17 @@ REST_FRAMEWORK = {
     ],
 }
 
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-1.5-flash')
+GROQ_API_KEY = config("GROQ_API_KEY")
+GROQ_MODEL = config(
+    "GROQ_MODEL",
+    default="llama-3.3-70b-versatile"
+)
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")

@@ -72,3 +72,10 @@ class Skill(models.Model):
     def __str__(self):
         return f"{self.name} ({self.category})"
 
+
+class Resume(models.Model):
+    file = models.FileField(upload_to='resume/')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Portfolio Resume"

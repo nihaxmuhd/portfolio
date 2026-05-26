@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Experience, Project, ProjectImage, Skill
+from .models import Experience, Project, ProjectImage, Skill, Resume
 
 
 class ProjectImageInline(admin.TabularInline):
@@ -26,3 +26,5 @@ class SkillAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'proficiency', 'order')
     list_filter = ('category',)
     search_fields = ('name',)
+
+admin.site.register(Resume)

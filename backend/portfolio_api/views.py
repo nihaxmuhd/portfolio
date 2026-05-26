@@ -5,9 +5,13 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from django.utils import timezone
-from .models import Project, Experience, Skill
-from .serializers import ProjectSerializer, ExperienceSerializer, SkillSerializer
-from .gemini_client import GeminiChatError, generate_chat_reply
+from .models import Project, Experience, Skill, Resume
+from .serializers import ProjectSerializer, ExperienceSerializer, SkillSerializer, ResumeSerializer
+from .groq_client import AIChatError, generate_chat_reply
+from rest_framework.views import APIView
+from django.core.mail import send_mail
+from rest_framework.response import Response
+from rest_framework import status
 
 # PLACEHOLDER: Custom analytics or visitor logging can be added in API hooks here
 
@@ -86,7 +90,7 @@ class ChatAPIView(APIView):
 
         try:
             reply = generate_chat_reply(message=message, history=history[-8:])
-        except GeminiChatError as exc:
+        except AIChatError as exc:
             return Response({
                 'error': str(exc),
                 'reply': "I couldn't answer that just now, but you can still explore Nihad's projects or use the contact section to reach out directly.",
@@ -104,3 +108,99 @@ class ChatAPIView(APIView):
             'timestamp': timezone.now().isoformat(),
         }, status=status.HTTP_200_OK)
 
+
+class ContactAPIView(APIView):
+
+    def post(self, request):
+        name = request.data.get("name")
+        email = request.data.get("email")
+        message = request.data.get("message")
+
+        full_message = f"""
+Name: {name}
+
+Email: {email}
+
+Message:
+{message}
+"""
+
+        send_mail(
+            subject=f"Portfolio Contact from {name}",
+            message=full_message,
+            from_email=email,
+            recipient_list=["muhammadnihad16@gmail.com"],
+            fail_silently=False,
+        )
+
+        return Response(
+            {"message": "Email sent successfully"},
+            status=status.HTTP_200_OK
+        )
+    
+
+class ResumeViewSet(
+    viewsets.ModelViewSet
+):
+    queryset = (
+        Resume.objects.all()
+        .order_by(
+            '-updated_at'
+        )
+    )
+
+    serializer_class = (
+        ResumeSerializer
+    )
+
+    permission_classes = [
+        IsAdminOrReadOnly
+    ]
+
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
+
+    def create(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+        # remove old resume
+        Resume.objects.all().delete()
+
+        uploaded_file = (
+            request.FILES.get(
+                'file'
+            )
+        )
+
+        if not uploaded_file:
+            return Response(
+                {
+                    'error':
+                    'No file uploaded'
+                },
+                status=400
+            )
+
+        resume = (
+            Resume.objects.create(
+                file=
+                uploaded_file
+            )
+        )
+
+        serializer = (
+            self.get_serializer(
+                resume
+            )
+        )
+
+        return Response(
+            serializer.data,
+            status=201
+        )
+    

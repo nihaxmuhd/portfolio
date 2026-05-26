@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import ChatAssistant from './components/chat/ChatAssistant';
 import { api } from './api';
+import AdminResume from './components/AdminResume';
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(() => api.isAuthenticated());
@@ -48,6 +49,9 @@ function App() {
 
       <main>
         <Hero />
+        <AdminResume
+          isAdmin={isAdmin}
+        />
         <About />
         <Skills isAdmin={isAdmin} />
         <Projects isAdmin={isAdmin} />
