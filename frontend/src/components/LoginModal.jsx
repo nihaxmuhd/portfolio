@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Lock, User, AlertCircle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { AlertCircle, Loader2, Lock, User, X } from 'lucide-react';
 import { api } from '../api';
 
 export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
@@ -10,7 +10,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -29,46 +29,41 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div 
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 shadow-2xl p-6 relative animate-in fade-in zoom-in-95 duration-200 text-slate-900 dark:text-white"
-      >
-        <button 
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-md">
+      <div className="glass-card relative w-full max-w-md rounded-[2rem] p-6 text-slate-900 shadow-2xl dark:text-white sm:p-8">
+        <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-500 hover:text-slate-950 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
+          className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-2xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+          aria-label="Close login modal"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
 
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-violet-500/10 dark:bg-violet-500/20 text-violet-650 dark:text-violet-400 mb-3 border border-violet-500/20 dark:border-violet-500/30">
-            <Lock className="w-6 h-6" />
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-violet-500/20 bg-violet-500/10 text-violet-600 dark:text-violet-400">
+            <Lock className="h-6 w-6" />
           </div>
-          <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white">Admin Authentication</h3>
-          <p className="text-sm text-slate-550 dark:text-gray-400 mt-1">
-            Access secure inline editing tools
-          </p>
+          <h3 className="font-display text-3xl font-bold tracking-tight">Admin Authentication</h3>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Access secure inline editing controls.</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-start gap-2 text-rose-500 dark:text-rose-400 text-sm">
-            <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <div className="mb-5 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-400">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-              Username
-            </label>
+            <label className="ui-label">Username</label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <User className="pointer-events-none absolute left-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 focus:border-violet-500 focus:outline-none text-slate-900 dark:text-white text-sm transition-colors duration-200"
+                onChange={e => setUsername(e.target.value)}
+                className="ui-input !pl-12"
                 placeholder="Enter admin username"
                 required
               />
@@ -76,34 +71,28 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-              Password
-            </label>
+            <label className="ui-label">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Lock className="pointer-events-none absolute left-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 focus:border-violet-500 focus:outline-none text-slate-900 dark:text-white text-sm transition-colors duration-200"
+                onChange={e => setPassword(e.target.value)}
+                className="ui-input !pl-12"
                 placeholder="Enter password"
                 required
               />
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-2 py-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-medium text-sm transition-all duration-200 shadow-lg shadow-violet-900/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button type="submit" disabled={loading} className="button-primary mt-2 w-full disabled:translate-y-0 disabled:opacity-60">
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Authenticating...</span>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Authenticating...
               </>
             ) : (
-              <span>Sign In</span>
+              'Sign In'
             )}
           </button>
         </form>

@@ -1,239 +1,81 @@
-// // import React from 'react';
-// // import { Briefcase, Award, Heart, GraduationCap } from 'lucide-react';
-
-// // const TRAITS = [
-// //   { icon: Briefcase,    color: 'text-violet-600 dark:text-violet-400', title: 'Product Mindset',    body: 'Applying management principles to build scalable features that align with key user metrics.' },
-// //   { icon: Award,        color: 'text-cyan-600 dark:text-cyan-400',     title: 'Full-Stack Flow',    body: 'Handling everything from Django model design, DRF serializers, custom auth, to React state.' },
-// //   { icon: Heart,        color: 'text-rose-500 dark:text-rose-400',     title: 'UX & Design',        body: 'Creating sleek interfaces, glassmorphic effects, and responsive grids for a premium impression.' },
-// //   { icon: GraduationCap,color: 'text-amber-500 dark:text-amber-400',   title: 'Always Learning',   body: 'Continuously upgrading skills in systems design, caching strategies, and modern React patterns.' },
-// // ];
-
-// // export default function About() {
-// //   return (
-// //     <section id="about" className="section-divider py-20 md:py-28">
-// //       <div className="container">
-
-// //         {/* ── Heading ── */}
-// //         <div className="text-center mb-14">
-// //           <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-// //             About Me
-// //           </h2>
-// //           <p className="text-violet-500 dark:text-violet-400 text-xs font-semibold uppercase tracking-widest mt-3">
-// //             The intersection of business strategy and software engineering
-// //           </p>
-// //         </div>
-
-// //         {/*
-// //           Desktop: narrative (7 cols) | trait cards (5 cols)
-// //           Mobile:  stacked vertically
-// //         */}
-// //         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-
-// //           {/* ── Left: Narrative ── */}
-// //           <div className="w-full lg:flex-[7] space-y-6">
-// //             <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug">
-// //               Bridging management insight with full-stack implementation.
-// //             </h3>
-
-// //             {/* PLACEHOLDER: YOUR BACKGROUND STORY */}
-// //             <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-// //               I come from a unique background combining business administration and project
-// //               coordination with a passion for software development. This dual-lens approach
-// //               lets me see software not just as syntax, but as a mechanism to achieve strategic
-// //               organisational goals and solve practical pain points.
-// //             </p>
-// //             <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-// //               My journey into programming started when I realised many operational problems in
-// //               corporate settings could be automated. Rather than relying on off-the-shelf tools,
-// //               I dove deep into Python, web architectures, database schemas, and modern responsive
-// //               user interfaces.
-// //             </p>
-
-// //             {/* PLACEHOLDER: YOUR PHILOSOPHY */}
-// //             <div className="mt-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/40 overflow-hidden">
-// //               <div className="px-4 py-2 bg-violet-600">
-// //                 <span className="text-[10px] uppercase font-bold text-white tracking-wider">My Philosophy</span>
-// //               </div>
-// //               <p className="px-5 py-4 text-sm italic text-slate-700 dark:text-gray-300 leading-relaxed">
-// //                 "Great software is built at the intersection of extreme user empathy, clean API
-// //                 design, and modular code. I write code that is clean to read, easy to test, and
-// //                 delivers value from day one."
-// //               </p>
-// //             </div>
-// //           </div>
-
-// //           {/* ── Right: Trait cards ── */}
-// //           <div className="w-full lg:flex-[5] grid grid-cols-1 sm:grid-cols-2 gap-4">
-// //             {TRAITS.map(({ icon: Icon, color, title, body }) => (
-// //               <div
-// //                 key={title}
-// //                 className="p-5 rounded-2xl glass-card border border-slate-200/50 dark:border-white/5 flex flex-col gap-3"
-// //               >
-// //                 <span className={color}><Icon className="w-7 h-7" /></span>
-// //                 <h4 className="font-bold text-slate-900 dark:text-white">{title}</h4>
-// //                 <p className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">{body}</p>
-// //               </div>
-// //             ))}
-// //           </div>
-// //         </div>
-// //       </div>
-// //     </section>
-// //   );
-// // }
-// import React from 'react';
-// import { Briefcase, Award, Heart, GraduationCap } from 'lucide-react';
-
-// const TRAITS = [
-//   { icon: Briefcase,    color: 'text-violet-600 dark:text-violet-400', title: 'Product Mindset',    body: 'Applying management principles to build scalable features that align with key user metrics.' },
-//   { icon: Award,        color: 'text-cyan-600 dark:text-cyan-400',     title: 'Full-Stack Flow',    body: 'Handling everything from Django model design, DRF serializers, custom auth, to React state.' },
-//   { icon: Heart,        color: 'text-rose-500 dark:text-rose-400',     title: 'UX & Design',        body: 'Creating sleek interfaces, glassmorphic effects, and responsive grids for a premium impression.' },
-//   { icon: GraduationCap,color: 'text-amber-500 dark:text-amber-400',   title: 'Always Learning',    body: 'Continuously upgrading skills in systems design, caching strategies, and modern React patterns.' },
-// ];
-
-// export default function About() {
-//   return (
-//     <section id="about" className="section-divider py-20 md:py-28">
-//       <div className="container mx-auto px-4 max-w-6xl">
-
-//         {/* ── Heading ── */}
-//         <div className="text-center mb-14">
-//           <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-//             About Me
-//           </h2>
-//           <p className="text-violet-500 dark:text-violet-400 text-xs font-semibold uppercase tracking-widest mt-3">
-//             The intersection of business strategy and software engineering
-//           </p>
-//         </div>
-
-//         {/* ── Layout Wrapper (Grid for narrative vs cards) ── */}
-//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-
-//           {/* ── Left: Narrative (7 Columns) ── */}
-//           <div className="w-full lg:col-span-7 space-y-6">
-//             <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug">
-//               Bridging management insight with full-stack implementation.
-//             </h3>
-
-//             <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-//               I come from a unique background combining business administration and project
-//               coordination with a passion for software development. This dual-lens approach
-//               lets me see software not just as syntax, but as a mechanism to achieve strategic
-//               organisational goals and solve practical pain points.
-//             </p>
-//             <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-//               My journey into programming started when I realised many operational problems in
-//               corporate settings could be automated. Rather than relying on off-the-shelf tools,
-//               I dive deep into Python, web architectures, database schemas, and modern responsive
-//               user interfaces.
-//             </p>
-
-//             {/* Philosophy Box */}
-//             <div className="mt-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/40 overflow-hidden">
-//               <div className="px-4 py-2 bg-violet-600">
-//                 <span className="text-[10px] uppercase font-bold text-white tracking-wider">My Philosophy</span>
-//               </div>
-//               <p className="px-5 py-4 text-sm italic text-slate-700 dark:text-gray-300 leading-relaxed">
-//                 "Great software is built at the intersection of extreme user empathy, clean API
-//                 design, and modular code. I write code that is clean to read, easy to test, and
-//                 delivers value from day one."
-//               </p>
-//             </div>
-//           </div>
-
-//           {/* ── Right: Trait cards (5 Columns) ── */}
-//           <div className="w-full lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-//             {TRAITS.map(({ icon: Icon, color, title, body }) => (
-//               <div
-//                 key={title}
-//                 className="p-5 rounded-2xl glass-card border border-slate-200/50 dark:border-white/5 flex flex-col gap-3"
-//               >
-//                 <span className={color}><Icon className="w-7 h-7" /></span>
-//                 <h4 className="font-bold text-slate-900 dark:text-white">{title}</h4>
-//                 <p className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">{body}</p>
-//               </div>
-//             ))}
-//           </div>
-
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-import React from 'react';
-import { Briefcase, Award, Heart, GraduationCap } from 'lucide-react';
+import { Award, Briefcase, GraduationCap, Heart } from 'lucide-react';
 
 const TRAITS = [
-  { icon: Briefcase,    color: 'text-violet-600 dark:text-violet-400', title: 'Product Mindset',    body: 'Applying management principles to build scalable features that align with key user metrics.' },
-  { icon: Award,        color: 'text-cyan-600 dark:text-cyan-400',     title: 'Full-Stack Flow',    body: 'Handling everything from Django model design, DRF serializers, custom auth, to React state.' },
-  { icon: Heart,        color: 'text-rose-500 dark:text-rose-400',     title: 'UX & Design',        body: 'Creating sleek interfaces, glassmorphic effects, and responsive grids for a premium impression.' },
-  { icon: GraduationCap,color: 'text-amber-500 dark:text-amber-400',   title: 'Always Learning',    body: 'Continuously upgrading skills in systems design, caching strategies, and modern React patterns.' },
+  {
+    icon: Briefcase,
+    color: 'text-violet-600 dark:text-violet-400',
+    title: 'Product Mindset',
+    body: 'I approach engineering decisions with business goals, customer outcomes, and maintainable delivery in mind.',
+  },
+  {
+    icon: Award,
+    color: 'text-cyan-600 dark:text-cyan-400',
+    title: 'Full-Stack Execution',
+    body: 'From backend modeling and APIs to polished frontend states, I enjoy owning the full product experience.',
+  },
+  {
+    icon: Heart,
+    color: 'text-rose-500 dark:text-rose-400',
+    title: 'Design Care',
+    body: 'I focus on clear interfaces, responsive systems, and details that make products feel calm and premium.',
+  },
+  {
+    icon: GraduationCap,
+    color: 'text-amber-500 dark:text-amber-400',
+    title: 'Always Improving',
+    body: 'I keep refining my craft through systems thinking, modern React patterns, and better frontend architecture.',
+  },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="section-divider py-20 md:py-28">
-      <div className="container mx-auto px-4 max-w-6xl">
-
-        {/* ── Heading ── */}
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-            About Me
-          </h2>
-          <p className="text-violet-500 dark:text-violet-400 text-xs font-semibold uppercase tracking-widest mt-3">
-            The intersection of business strategy and software engineering
+    <section id="about" className="section-shell section-divider">
+      <div className="container">
+        <div className="section-heading centered mb-14 md:mb-16">
+          <p className="section-kicker text-violet-600 dark:text-violet-400">About me</p>
+          <h2 className="section-title text-slate-950 dark:text-white">Strategy, engineering, and interface craft in one workflow.</h2>
+          <p className="section-copy">
+            My background blends business thinking with software delivery, which helps me build solutions that are both technically sound and useful in the real world.
           </p>
         </div>
 
-        {/* ── Layout Wrapper (12-Column Grid) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.95fr)] lg:gap-12">
+          <div className="glass-card rounded-[2rem] p-6 sm:p-8 lg:p-10">
+            <div className="space-y-5">
+              <h3 className="font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+                Bridging management insight with full-stack implementation.
+              </h3>
+              <p className="text-base leading-8 text-slate-600 dark:text-slate-300">
+                I come from a background that combines business administration, coordination, and a deep interest in building software.
+                That perspective lets me see code not just as implementation, but as a way to solve operational problems clearly and sustainably.
+              </p>
+              <p className="text-base leading-8 text-slate-600 dark:text-slate-300">
+                My journey into development grew from wanting better systems than the off-the-shelf tools around me. That pushed me into Python,
+                Django, API design, relational data modeling, and modern frontend work where usability matters just as much as correctness.
+              </p>
+            </div>
 
-          {/* ── Left: Narrative (7 Columns) ── */}
-          <div className="w-full lg:col-span-7 space-y-6">
-            <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug">
-              Bridging management insight with full-stack implementation.
-            </h3>
-
-            <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-              I come from a unique background combining business administration and project
-              coordination with a passion for software development. This dual-lens approach
-              lets me see software not just as syntax, but as a mechanism to achieve strategic
-              organisational goals and solve practical pain points.
-            </p>
-            <p className="text-base text-slate-600 dark:text-gray-400 leading-relaxed">
-              My journey into programming started when I realised many operational problems in
-              corporate settings could be automated. Rather than relying on off-the-shelf tools,
-              I dive deep into Python, web architectures, database schemas, and modern responsive
-              user interfaces.
-            </p>
-
-            {/* Philosophy Box */}
-            <div className="mt-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/40 overflow-hidden">
-              <div className="px-4 py-2 bg-violet-600">
-                <span className="text-[10px] uppercase font-bold text-white tracking-wider">My Philosophy</span>
+            <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 dark:border-white/8 dark:bg-slate-950/60">
+              <div className="bg-gradient-to-r from-violet-600 to-cyan-500 px-5 py-3">
+                <span className="text-xs font-bold uppercase tracking-[0.22em] text-white">My philosophy</span>
               </div>
-              <p className="px-5 py-4 text-sm italic text-slate-700 dark:text-gray-300 leading-relaxed">
-                "Great software is built at the intersection of extreme user empathy, clean API
-                design, and modular code. I write code that is clean to read, easy to test, and
-                delivers value from day one."
+              <p className="px-5 py-5 text-sm italic leading-7 text-slate-700 dark:text-slate-300 sm:text-base">
+                Great software sits at the intersection of user empathy, reliable architecture, and a frontend experience that feels intentionally designed from the first click.
               </p>
             </div>
           </div>
 
-          {/* ── Right: Trait cards (5 Columns) ── */}
-          <div className="w-full lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {TRAITS.map(({ icon: Icon, color, title, body }) => (
-              <div
-                key={title}
-                className="p-5 rounded-2xl glass-card border border-slate-200/50 dark:border-white/5 flex flex-col gap-3"
-              >
-                <span className={color}><Icon className="w-7 h-7" /></span>
-                <h4 className="font-bold text-slate-900 dark:text-white">{title}</h4>
-                <p className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">{body}</p>
+              <div key={title} className="glass-card rounded-[1.75rem] p-6">
+                <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-900/80 ${color}`}>
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-display text-xl font-bold tracking-tight text-slate-950 dark:text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{body}</p>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

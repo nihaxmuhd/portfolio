@@ -1,148 +1,140 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { useState } from 'react';
+import { CheckCircle, Mail, MapPin, MessageSquare, Phone, Send } from 'lucide-react';
 
 const CONTACT_DETAILS = [
   {
     icon: Mail,
     color: 'text-violet-600 dark:text-violet-400',
-    bg:    'bg-violet-500/10 border-violet-500/20 group-hover:bg-violet-600',
+    bg: 'bg-violet-500/10 border-violet-500/20 group-hover:bg-violet-600',
     label: 'Email Me',
-    /* PLACEHOLDER: YOUR EMAIL */
     value: 'nihad@example.com',
-    href:  'mailto:nihad@example.com',
+    href: 'mailto:nihad@example.com',
   },
   {
     icon: Phone,
     color: 'text-cyan-600 dark:text-cyan-400',
-    bg:    'bg-cyan-500/10 border-cyan-500/20 group-hover:bg-cyan-600',
+    bg: 'bg-cyan-500/10 border-cyan-500/20 group-hover:bg-cyan-600',
     label: 'Call Me',
-    /* PLACEHOLDER: YOUR PHONE */
     value: '+91 98765 43210',
-    href:  'tel:+919876543210',
+    href: 'tel:+919876543210',
   },
   {
     icon: MapPin,
     color: 'text-rose-500 dark:text-rose-400',
-    bg:    'bg-rose-500/10 border-rose-500/20 group-hover:bg-rose-600',
+    bg: 'bg-rose-500/10 border-rose-500/20 group-hover:bg-rose-600',
     label: 'Location',
-    /* PLACEHOLDER: YOUR CITY */
     value: 'Kerala, India',
-    href:  null,
+    href: null,
   },
 ];
 
 export default function Contact() {
-  const [name,    setName   ] = useState('');
-  const [email,   setEmail  ] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sent,    setSent   ] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     setLoading(true);
+
     setTimeout(() => {
-      setLoading(false); setSent(true);
-      setName(''); setEmail(''); setMessage('');
+      setLoading(false);
+      setSent(true);
+      setName('');
+      setEmail('');
+      setMessage('');
     }, 1400);
   };
 
-  const inp = 'w-full px-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/8 focus:outline-none focus:border-violet-500 text-slate-900 dark:text-white text-sm transition-colors';
-
   return (
-    <section id="contact" className="section-divider py-20 md:py-28 bg-slate-50/50 dark:bg-slate-950/20">
+    <section id="contact" className="section-shell section-divider bg-slate-50/55 dark:bg-slate-950/20">
       <div className="container">
-
-        {/* ── Heading ── */}
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-            Get In Touch
-          </h2>
-          <p className="text-cyan-600 dark:text-cyan-400 text-xs font-semibold uppercase tracking-widest mt-3">
-            Let's collaborate or build something together
+        <div className="section-heading centered mb-14 md:mb-16">
+          <p className="section-kicker text-cyan-600 dark:text-cyan-400">Get in touch</p>
+          <h2 className="section-title text-slate-950 dark:text-white">Let&apos;s build something thoughtful together.</h2>
+          <p className="section-copy">
+            Reach out for freelance work, product collaboration, or a quick conversation about a project you want to shape well from the start.
           </p>
         </div>
 
-        {/*
-          Two-column: details (left) | form (right)
-          Stack on mobile, side-by-side on lg
-        */}
-        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
-
-          {/* ── Left: Contact details ── */}
-          <div className="w-full lg:w-80 flex-shrink-0 space-y-5">
-            <div className="space-y-2 mb-6">
-              <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white">Contact Details</h3>
-              <p className="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">
-                Have a project idea, job inquiry, or want to discuss collaboration? Reach out via the form or the links below.
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)] lg:gap-8">
+          <div className="grid gap-4">
+            <div className="glass-card rounded-[2rem] p-6 sm:p-7">
+              <h3 className="font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white">Contact details</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                If you already know what you need, the fastest route is email. If not, send a message and we can shape the scope together.
               </p>
             </div>
+
             {CONTACT_DETAILS.map(({ icon: Icon, color, bg, label, value, href }) => {
-              const inner = (
-                <div className="flex items-center gap-4 p-4 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white dark:bg-slate-900/20 hover:border-violet-300 dark:hover:border-violet-500/20 hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-all group shadow-sm">
-                  <div className={`w-10 h-10 rounded-lg border flex items-center justify-center ${color} ${bg} group-hover:text-white transition-colors flex-shrink-0`}>
-                    <Icon className="w-5 h-5" />
+              const content = (
+                <div className="glass-card group flex items-center gap-4 rounded-[1.6rem] p-4 sm:p-5">
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border ${bg} ${color} transition-colors group-hover:text-white`}>
+                    <Icon className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] text-slate-500 dark:text-gray-500 font-bold uppercase tracking-widest">{label}</p>
-                    <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">{value}</p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{label}</p>
+                    <p className="truncate pt-1 text-sm font-semibold text-slate-800 dark:text-white sm:text-base">{value}</p>
                   </div>
                 </div>
               );
-              return href
-                ? <a key={label} href={href}>{inner}</a>
-                : <div key={label}>{inner}</div>;
+
+              return href ? (
+                <a key={label} href={href}>
+                  {content}
+                </a>
+              ) : (
+                <div key={label}>{content}</div>
+              );
             })}
           </div>
 
-          {/* ── Right: Message form ── */}
-          <div className="w-full flex-1">
-            <div className="p-6 sm:p-8 rounded-2xl glass-card border border-slate-200/80 dark:border-white/10">
-              {sent ? (
-                <div className="py-14 text-center space-y-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                    <CheckCircle className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-bold text-slate-900 dark:text-white">Message Sent!</h4>
-                  <p className="text-sm text-slate-500 dark:text-gray-400 max-w-sm mx-auto leading-relaxed">
-                    Thank you for reaching out. I'll get back to you within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => setSent(false)}
-                    className="px-6 py-2.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-gray-300 font-semibold text-sm transition-colors"
-                  >
-                    Send Another
-                  </button>
+          <div className="glass-card rounded-[2rem] p-6 sm:p-8">
+            {sent ? (
+              <div className="flex min-h-[24rem] flex-col items-center justify-center text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle className="h-8 w-8" />
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="flex items-center gap-2 text-slate-900 dark:text-white font-bold mb-4">
-                    <MessageSquare className="w-5 h-5 text-violet-500 flex-shrink-0" />
-                    <span>Send a Direct Message</span>
+                <h3 className="mt-5 font-display text-3xl font-bold tracking-tight text-slate-950 dark:text-white">Message sent</h3>
+                <p className="mt-3 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  Thanks for reaching out. I&apos;ll get back to you as soon as possible, usually within one business day.
+                </p>
+                <button onClick={() => setSent(false)} className="button-secondary mt-6">
+                  Send Another
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="flex items-center gap-3 pb-2 text-slate-950 dark:text-white">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
+                    <MessageSquare className="h-5 w-5" />
                   </div>
+                  <div>
+                    <h3 className="font-display text-2xl font-bold tracking-tight">Send a direct message</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">A simple form for inquiries and collaboration ideas.</p>
+                  </div>
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Your Name</label>
-                    <input type="text" value={name} onChange={e => setName(e.target.value)} className={inp} placeholder="Muhammed Nihad" required />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} className={inp} placeholder="you@example.com" required />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Message</label>
-                    <textarea value={message} onChange={e => setMessage(e.target.value)} rows="5" className={inp + ' font-sans'} placeholder="Hi, I'd love to build a project with you…" required />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-3 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-violet-500/20 transition-all"
-                  >
-                    {loading ? 'Sending…' : <><span>Send Message</span><Send className="w-4 h-4" /></>}
-                  </button>
-                </form>
-              )}
-            </div>
+                <div>
+                  <label className="ui-label">Your Name</label>
+                  <input type="text" value={name} onChange={e => setName(e.target.value)} className="ui-input" placeholder="Muhammed Nihad" required />
+                </div>
+                <div>
+                  <label className="ui-label">Email Address</label>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="ui-input" placeholder="you@example.com" required />
+                </div>
+                <div>
+                  <label className="ui-label">Message</label>
+                  <textarea value={message} onChange={e => setMessage(e.target.value)} rows="6" className="ui-textarea" placeholder="Hi, I&apos;d love to discuss a project..." required />
+                </div>
+                <button type="submit" disabled={loading} className="button-primary w-full disabled:translate-y-0 disabled:opacity-60">
+                  {loading ? 'Sending...' : 'Send Message'}
+                  {!loading && <Send className="h-4 w-4" />}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Shield, LogOut, Menu, X, Sun, Moon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { LogOut, Menu, Moon, Shield, Sun, X } from 'lucide-react';
 import { api } from '../api';
+
+const NAV_LINKS = [
+  { name: 'About', href: '#about' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Contact', href: '#contact' },
+];
 
 export default function Navbar({ isAdmin, setIsAdmin, onOpenLogin, theme, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Close mobile drawer when viewport becomes desktop-sized
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth >= 768) setIsOpen(false); };
+    const onResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsOpen(false);
+      }
+    };
+
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Add shadow on scroll
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   const handleLogout = () => {
     api.logout();
@@ -26,159 +45,148 @@ export default function Navbar({ isAdmin, setIsAdmin, onOpenLogin, theme, toggle
     setIsOpen(false);
   };
 
-  const navLinks = [
-    { name: 'About',      href: '#about'      },
-    { name: 'Skills',     href: '#skills'     },
-    { name: 'Projects',   href: '#projects'   },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact',    href: '#contact'    },
-  ];
-
   return (
     <>
-      {/* ── Fixed navbar bar ── */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-40 glass transition-shadow duration-300 ${
-          scrolled ? 'shadow-lg shadow-black/5' : ''
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-all duration-300 ${
+          scrolled
+            ? 'glass border-slate-200/70 shadow-lg shadow-slate-900/5 dark:border-white/10'
+            : 'border-transparent bg-white/70 dark:bg-slate-950/65 backdrop-blur-xl'
         }`}
-        style={{ borderBottom: '1px solid rgba(15,23,42,0.08)' }}
       >
         <div className="container">
-          <div className="flex items-center justify-between h-16">
-
-            {/* Logo */}
+          <div className="flex h-18 items-center justify-between gap-4 py-3">
             <a
               href="#"
-              className="flex-shrink-0 text-xl font-bold font-display tracking-wide"
+              className="min-w-0 font-display text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl"
               onClick={() => setIsOpen(false)}
             >
-              <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent">
                 Dev.Portfolio
               </span>
             </a>
 
-            {/* ── Desktop nav links ── */}
-            <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              {navLinks.map(link => (
+            <div className="hidden items-center gap-6 lg:flex xl:gap-7">
+              {NAV_LINKS.map(link => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm font-semibold text-slate-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors duration-200"
+                  className="text-sm font-semibold text-slate-600 transition-colors duration-200 hover:text-violet-600 dark:text-slate-300 dark:hover:text-violet-400"
                 >
                   {link.name}
                 </a>
               ))}
             </div>
 
-            {/* ── Desktop right controls ── */}
-            <div className="hidden md:flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-white/10">
-              {/* Theme toggle */}
+            <div className="hidden items-center gap-3 lg:flex">
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-700 text-slate-600 dark:text-gray-300 transition-all"
-                aria-label="Toggle Theme"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200/80 bg-white/80 text-slate-600 transition-colors hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-violet-500/40 dark:hover:text-violet-300"
+                aria-label="Toggle theme"
               >
-                {theme === 'dark'
-                  ? <Sun  className="w-4 h-4 text-amber-400" />
-                  : <Moon className="w-4 h-4 text-violet-500" />}
+                {theme === 'dark' ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-violet-500" />}
               </button>
 
-              {/* Admin pill / login */}
               {isAdmin ? (
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 whitespace-nowrap">
-                    <Shield className="w-3.5 h-3.5" /> Admin Mode
+                <>
+                  <span className="pill border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <Shield className="h-3.5 w-3.5" />
+                    Admin Mode
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-1.5 text-xs text-rose-500 hover:text-rose-400 font-semibold transition-colors"
+                    className="button-ghost min-h-11 rounded-2xl px-4 text-sm text-rose-500 hover:text-rose-600 dark:text-rose-400"
                   >
-                    <LogOut className="w-3.5 h-3.5" /> Logout
+                    <LogOut className="h-4 w-4" />
+                    Logout
                   </button>
-                </div>
+                </>
               ) : (
                 <button
                   onClick={onOpenLogin}
-                  className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-violet-400 font-semibold transition-colors"
+                  className="button-ghost min-h-11 rounded-2xl px-4 text-sm"
                 >
-                  <Shield className="w-3.5 h-3.5" /> Admin
+                  <Shield className="h-4 w-4" />
+                  Admin
                 </button>
               )}
             </div>
 
-            {/* ── Mobile right controls ── */}
-            <div className="flex md:hidden items-center gap-2">
+            <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-gray-300 transition-all"
-                aria-label="Toggle Theme"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200/70 bg-white/80 text-slate-600 transition-colors hover:text-violet-600 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-300"
+                aria-label="Toggle theme"
               >
-                {theme === 'dark'
-                  ? <Sun  className="w-4 h-4 text-amber-400" />
-                  : <Moon className="w-4 h-4 text-violet-500" />}
+                {theme === 'dark' ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-violet-500" />}
               </button>
 
-              {isAdmin && (
-                <span className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                  <Shield className="w-3 h-3" /> Admin
-                </span>
-              )}
-
               <button
-                onClick={() => setIsOpen(v => !v)}
-                className="p-2 rounded-lg text-slate-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                onClick={() => setIsOpen(prev => !prev)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200/70 bg-white/80 text-slate-700 transition-colors hover:text-violet-600 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-200"
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isOpen}
               >
-                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
-
           </div>
         </div>
 
-        {/* ── Mobile drawer ── */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-          }`}
-          style={{ borderTop: isOpen ? '1px solid rgba(15,23,42,0.07)' : 'none' }}
+          className={`lg:hidden transition-[max-height,opacity] duration-300 ease-out ${
+            isOpen ? 'max-h-[75vh] opacity-100' : 'max-h-0 opacity-0'
+          } overflow-hidden border-t border-slate-200/70 bg-white/95 dark:border-white/10 dark:bg-slate-950/95`}
         >
-          <div className="bg-white/95 dark:bg-slate-950/97 backdrop-blur-lg px-4 pt-3 pb-5 space-y-1">
-            {navLinks.map(link => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block px-3 py-3 rounded-lg text-base font-semibold text-slate-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-slate-800/50 transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
+          <div className="container py-4">
+            <div className="surface-blur rounded-3xl p-3">
+              <div className="flex flex-col gap-1">
+                {NAV_LINKS.map(link => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-600 dark:text-slate-200 dark:hover:bg-slate-800/70 dark:hover:text-violet-300"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
 
-            <div className="pt-3 border-t border-slate-100 dark:border-white/10">
-              {isAdmin ? (
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 dark:text-rose-400 text-sm font-semibold hover:bg-rose-500/20 transition-colors"
-                >
-                  <LogOut className="w-4 h-4" /> Log Out Admin
-                </button>
-              ) : (
-                <button
-                  onClick={() => { onOpenLogin(); setIsOpen(false); }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-gray-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700/80 transition-colors"
-                >
-                  <Shield className="w-4 h-4" /> Admin Login
-                </button>
-              )}
+              <div className="mt-3 border-t border-slate-200/70 pt-3 dark:border-white/10">
+                {isAdmin ? (
+                  <div className="space-y-3">
+                    <div className="pill w-full justify-center border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                      <Shield className="h-3.5 w-3.5" />
+                      Admin Session Active
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="button-ghost w-full rounded-2xl text-rose-500 dark:text-rose-400"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      onOpenLogin();
+                      setIsOpen(false);
+                    }}
+                    className="button-primary w-full rounded-2xl"
+                  >
+                    <Shield className="h-4 w-4" />
+                    Admin Login
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* ── Spacer so content starts below fixed nav ── */}
-      <div className="h-16" aria-hidden="true" />
+      <div className="h-[4.75rem]" aria-hidden="true" />
     </>
   );
 }

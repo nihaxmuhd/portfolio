@@ -1,87 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Save, X, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Edit, Plus, Save, Sparkles, Trash2, X } from 'lucide-react';
 import { api } from '../api';
 
 const CATEGORIES = ['Backend', 'Frontend', 'Tools/Others'];
 
 const CAT_COLORS = {
-  'Backend':      'from-violet-500 to-purple-500',
-  'Frontend':     'from-cyan-500 to-blue-500',
+  Backend: 'from-violet-500 to-purple-500',
+  Frontend: 'from-cyan-500 to-blue-500',
   'Tools/Others': 'from-emerald-500 to-teal-500',
 };
 
 const DEFAULTS = [
-  { id: 'd1',  name: 'Python',                   category: 'Backend',      proficiency: 90, order: 1 },
-  { id: 'd2',  name: 'Django',                   category: 'Backend',      proficiency: 85, order: 2 },
-  { id: 'd3',  name: 'Django REST Framework',    category: 'Backend',      proficiency: 85, order: 3 },
-  { id: 'd4',  name: 'RESTful APIs',             category: 'Backend',      proficiency: 90, order: 4 },
-  { id: 'd5',  name: 'Databases (SQL)',           category: 'Backend',      proficiency: 80, order: 5 },
-  { id: 'd6',  name: 'JavaScript',               category: 'Frontend',     proficiency: 85, order: 1 },
-  { id: 'd7',  name: 'React.js',                 category: 'Frontend',     proficiency: 80, order: 2 },
-  { id: 'd8',  name: 'Tailwind CSS',             category: 'Frontend',     proficiency: 90, order: 3 },
-  { id: 'd9',  name: 'HTML5 & CSS3',             category: 'Frontend',     proficiency: 95, order: 4 },
-  { id: 'd10', name: 'Git',                      category: 'Tools/Others', proficiency: 85, order: 1 },
-  { id: 'd11', name: 'GitHub',                   category: 'Tools/Others', proficiency: 90, order: 2 },
-  { id: 'd12', name: 'Postman',                  category: 'Tools/Others', proficiency: 80, order: 3 },
-  { id: 'd13', name: 'AI-assisted Development',  category: 'Tools/Others', proficiency: 95, order: 4 },
+  { id: 'd1', name: 'Python', category: 'Backend', proficiency: 90, order: 1 },
+  { id: 'd2', name: 'Django', category: 'Backend', proficiency: 85, order: 2 },
+  { id: 'd3', name: 'Django REST Framework', category: 'Backend', proficiency: 85, order: 3 },
+  { id: 'd4', name: 'RESTful APIs', category: 'Backend', proficiency: 90, order: 4 },
+  { id: 'd5', name: 'Databases (SQL)', category: 'Backend', proficiency: 80, order: 5 },
+  { id: 'd6', name: 'JavaScript', category: 'Frontend', proficiency: 85, order: 1 },
+  { id: 'd7', name: 'React.js', category: 'Frontend', proficiency: 80, order: 2 },
+  { id: 'd8', name: 'Tailwind CSS', category: 'Frontend', proficiency: 90, order: 3 },
+  { id: 'd9', name: 'HTML5 and CSS3', category: 'Frontend', proficiency: 95, order: 4 },
+  { id: 'd10', name: 'Git', category: 'Tools/Others', proficiency: 85, order: 1 },
+  { id: 'd11', name: 'GitHub', category: 'Tools/Others', proficiency: 90, order: 2 },
+  { id: 'd12', name: 'Postman', category: 'Tools/Others', proficiency: 80, order: 3 },
+  { id: 'd13', name: 'AI-assisted Development', category: 'Tools/Others', proficiency: 95, order: 4 },
 ];
 
-/* ── Skill row with progress bar ──────────────────────────── */
 function SkillRow({ skill, gradientClass, isAdmin, onEdit, onDelete }) {
   return (
-    <div className="space-y-1.5">
-      {/* Label row */}
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm font-semibold text-slate-800 dark:text-gray-200 truncate">
-          {skill.name}
-        </span>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className={`text-xs font-bold font-mono bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>
+    <div className="space-y-2">
+      <div className="flex items-center justify-between gap-3">
+        <span className="min-w-0 truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{skill.name}</span>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className={`text-xs font-bold bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>
             {skill.proficiency}%
           </span>
           {isAdmin && (
-            <div className="flex gap-1">
-              <button onClick={() => onEdit(skill)} className="p-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors" title="Edit"><Edit className="w-3 h-3" /></button>
-              <button onClick={() => onDelete(skill.id)} className="p-1 rounded bg-slate-100 dark:bg-slate-800 text-rose-400 hover:text-rose-600 transition-colors" title="Delete"><Trash2 className="w-3 h-3" /></button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => onEdit(skill)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors hover:text-violet-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-violet-400"
+                title="Edit"
+              >
+                <Edit className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={() => onDelete(skill.id)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-rose-500 transition-colors hover:text-rose-600 dark:bg-slate-800 dark:text-rose-400"
+                title="Delete"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
             </div>
           )}
         </div>
       </div>
-      {/* Bar track */}
-      <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full bg-gradient-to-r ${gradientClass} transition-all duration-700`}
-          style={{ width: `${skill.proficiency}%` }}
-        />
+      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+        <div className={`h-full rounded-full bg-gradient-to-r ${gradientClass} transition-all duration-700`} style={{ width: `${skill.proficiency}%` }} />
       </div>
     </div>
   );
 }
 
-/* ── Inline edit form for a single skill ─────────────────── */
 function InlineEditForm({ skill, onSave, onCancel }) {
-  const [name, setName]               = useState(skill.name);
+  const [name, setName] = useState(skill.name);
   const [proficiency, setProficiency] = useState(skill.proficiency);
 
   return (
-    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 space-y-3">
-      <input
-        value={name}
-        onChange={e => setName(e.target.value)}
-        className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors"
-      />
+    <div className="space-y-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/90 p-4 dark:border-white/10 dark:bg-slate-950/60">
+      <input value={name} onChange={e => setName(e.target.value)} className="ui-input" />
       <div className="flex items-center gap-3">
-        <span className="text-xs text-slate-500 dark:text-gray-400 w-10 flex-shrink-0">{proficiency}%</span>
+        <span className="w-10 shrink-0 text-xs font-semibold text-slate-500 dark:text-slate-400">{proficiency}%</span>
         <input
-          type="range" min="0" max="100" value={proficiency}
+          type="range"
+          min="0"
+          max="100"
+          value={proficiency}
           onChange={e => setProficiency(Number(e.target.value))}
-          className="flex-1 accent-violet-600 cursor-pointer"
+          className="flex-1 cursor-pointer accent-violet-600"
         />
       </div>
-      <div className="flex gap-2 justify-end">
-        <button onClick={onCancel} className="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-        <button onClick={() => onSave({ ...skill, name, proficiency })} className="px-3 py-1 rounded-lg text-xs font-semibold bg-violet-600 hover:bg-violet-500 text-white transition-colors flex items-center gap-1">
-          <Save className="w-3 h-3" /> Save
+      <div className="flex justify-end gap-2">
+        <button onClick={onCancel} className="button-ghost min-h-10 rounded-xl px-4 text-xs">Cancel</button>
+        <button onClick={() => onSave({ ...skill, name, proficiency })} className="button-primary min-h-10 rounded-xl px-4 text-xs">
+          <Save className="h-3.5 w-3.5" />
+          Save
         </button>
       </div>
     </div>
@@ -89,16 +92,14 @@ function InlineEditForm({ skill, onSave, onCancel }) {
 }
 
 export default function Skills({ isAdmin }) {
-  const [skills,     setSkills    ] = useState([]);
-  const [loading,    setLoading   ] = useState(true);
-  const [editingId,  setEditingId ] = useState(null);
-  const [isAdding,   setIsAdding  ] = useState(false);
-
-  // Add-form states
-  const [newName,        setNewName       ] = useState('');
-  const [newCategory,    setNewCategory   ] = useState('Backend');
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newCategory, setNewCategory] = useState('Backend');
   const [newProficiency, setNewProficiency] = useState(80);
-  const [newOrder,       setNewOrder      ] = useState(0);
+  const [newOrder, setNewOrder] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -113,134 +114,166 @@ export default function Skills({ isAdmin }) {
     })();
   }, []);
 
-  const handleCreate = async (e) => {
+  const handleCreate = async e => {
     e.preventDefault();
     if (!newName.trim()) return;
+
     try {
-      const s = await api.createSkill({ name: newName, category: newCategory, proficiency: newProficiency, order: parseInt(newOrder) || 0 });
-      setSkills(ps => [...ps.filter(x => !String(x.id).startsWith('d')), s]);
+      const created = await api.createSkill({
+        name: newName,
+        category: newCategory,
+        proficiency: newProficiency,
+        order: parseInt(newOrder, 10) || 0,
+      });
+
+      setSkills(prev => [...prev.filter(item => !String(item.id).startsWith('d')), created]);
       setIsAdding(false);
-      setNewName(''); setNewCategory('Backend'); setNewProficiency(80); setNewOrder(0);
-    } catch (err) { alert('Error: ' + err.message); }
+      setNewName('');
+      setNewCategory('Backend');
+      setNewProficiency(80);
+      setNewOrder(0);
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
   };
 
-  const handleUpdate = async (updated) => {
+  const handleUpdate = async updated => {
     try {
-      const s = await api.updateSkill(updated.id, { name: updated.name, category: updated.category, proficiency: updated.proficiency, order: updated.order });
-      setSkills(ps => ps.map(x => x.id === s.id ? s : x));
+      const saved = await api.updateSkill(updated.id, {
+        name: updated.name,
+        category: updated.category,
+        proficiency: updated.proficiency,
+        order: updated.order,
+      });
+
+      setSkills(prev => prev.map(item => (item.id === saved.id ? saved : item)));
       setEditingId(null);
-    } catch (err) { alert('Error: ' + err.message); }
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async id => {
     if (!window.confirm('Delete this skill?')) return;
-    if (String(id).startsWith('d')) { setSkills(ps => ps.filter(x => x.id !== id)); return; }
-    try { await api.deleteSkill(id); setSkills(ps => ps.filter(x => x.id !== id)); }
-    catch (err) { alert('Error: ' + err.message); }
+
+    if (String(id).startsWith('d')) {
+      setSkills(prev => prev.filter(item => item.id !== id));
+      return;
+    }
+
+    try {
+      await api.deleteSkill(id);
+      setSkills(prev => prev.filter(item => item.id !== id));
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
   };
 
-  const grouped = CATEGORIES.reduce((acc, cat) => {
-    acc[cat] = skills.filter(s => s.category === cat).sort((a, b) => (a.order || 0) - (b.order || 0));
+  const grouped = CATEGORIES.reduce((acc, category) => {
+    acc[category] = skills
+      .filter(skill => skill.category === category)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
     return acc;
   }, {});
 
-  const inputCls = 'w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-violet-500 transition-colors';
-
   return (
-    <section id="skills" className="section-divider py-20 md:py-28 bg-slate-50/60 dark:bg-slate-950/20">
+    <section id="skills" className="section-shell section-divider bg-slate-50/55 dark:bg-slate-950/20">
       <div className="container">
-
-        {/* ── Heading ── */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-          <div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-              Skills &amp; Tech Stack
-            </h2>
-            <p className="text-violet-500 dark:text-violet-400 text-xs font-semibold uppercase tracking-widest mt-2">
-              My tools and languages for building digital systems
+        <div className="section-header-row">
+          <div className="section-heading">
+            <p className="section-kicker text-violet-600 dark:text-violet-400">Skills and tech stack</p>
+            <h2 className="section-title text-slate-950 dark:text-white">Tools I rely on to build stable, usable products.</h2>
+            <p className="section-copy">
+              A balanced stack across backend engineering, frontend craft, and delivery tools that keep work maintainable as projects grow.
             </p>
           </div>
+
           {isAdmin && (
-            <button
-              onClick={() => setIsAdding(v => !v)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-colors flex-shrink-0"
-            >
-              {isAdding ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            <button onClick={() => setIsAdding(prev => !prev)} className="button-primary shrink-0">
+              {isAdding ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
               {isAdding ? 'Cancel' : 'Add Skill'}
             </button>
           )}
         </div>
 
-        {/* ── Add skill form ── */}
         {isAdding && (
-          <form onSubmit={handleCreate} className="mb-10 p-6 rounded-2xl glass-card border border-slate-200/60 dark:border-white/10 max-w-xl mx-auto space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-violet-500" /> Add a New Skill
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onSubmit={handleCreate} className="glass-card mx-auto mb-10 max-w-3xl rounded-[2rem] p-6 sm:p-8">
+            <div className="mb-6 flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
+              <Sparkles className="h-4 w-4 text-violet-500" />
+              Add a New Skill
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs text-slate-500 dark:text-gray-400 font-semibold mb-1 uppercase tracking-wider">Skill Name</label>
-                <input type="text" value={newName} onChange={e => setNewName(e.target.value)} className={inputCls} placeholder="e.g., GraphQL" required />
+                <label className="ui-label">Skill Name</label>
+                <input type="text" value={newName} onChange={e => setNewName(e.target.value)} className="ui-input" placeholder="GraphQL" required />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 dark:text-gray-400 font-semibold mb-1 uppercase tracking-wider">Category</label>
-                <select value={newCategory} onChange={e => setNewCategory(e.target.value)} className={inputCls}>
-                  {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                <label className="ui-label">Category</label>
+                <select value={newCategory} onChange={e => setNewCategory(e.target.value)} className="ui-select">
+                  {CATEGORIES.map(category => <option key={category}>{category}</option>)}
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs text-slate-500 dark:text-gray-400 font-semibold mb-1 uppercase tracking-wider">Proficiency ({newProficiency}%)</label>
-                <input type="range" min="0" max="100" value={newProficiency} onChange={e => setNewProficiency(Number(e.target.value))} className="w-full accent-violet-600 cursor-pointer mt-1" />
+                <label className="ui-label">Proficiency ({newProficiency}%)</label>
+                <input type="range" min="0" max="100" value={newProficiency} onChange={e => setNewProficiency(Number(e.target.value))} className="mt-4 w-full cursor-pointer accent-violet-600" />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 dark:text-gray-400 font-semibold mb-1 uppercase tracking-wider">Order</label>
-                <input type="number" value={newOrder} onChange={e => setNewOrder(e.target.value)} className={inputCls} placeholder="0" />
+                <label className="ui-label">Order</label>
+                <input type="number" value={newOrder} onChange={e => setNewOrder(e.target.value)} className="ui-input" />
               </div>
             </div>
-            <button type="submit" className="w-full py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-colors">Save Skill</button>
+
+            <button type="submit" className="button-primary mt-6 w-full">Save Skill</button>
           </form>
         )}
 
-        {/* ── Skill cards grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {CATEGORIES.map(cat => {
-            const gradient = CAT_COLORS[cat] || 'from-violet-500 to-cyan-500';
-            const list = grouped[cat] || [];
-            return (
-              <div key={cat} className="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200/60 dark:border-white/5 shadow-sm">
-                {/* Category header */}
-                <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-200 dark:border-white/8">
-                  <h3 className="font-bold text-slate-900 dark:text-white font-display">{cat}</h3>
-                  <span className="text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-gray-400 px-2 py-0.5 rounded-full">
-                    {list.length}
-                  </span>
-                </div>
+        {loading ? (
+          <div className="py-16 text-center text-sm text-slate-500 dark:text-slate-400">Loading skills...</div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {CATEGORIES.map(category => {
+              const gradient = CAT_COLORS[category] || 'from-violet-500 to-cyan-500';
+              const list = grouped[category] || [];
 
-                <div className="space-y-5">
-                  {list.length > 0 ? list.map(skill => (
-                    <div key={skill.id}>
-                      {editingId === skill.id ? (
-                        <InlineEditForm skill={skill} onSave={handleUpdate} onCancel={() => setEditingId(null)} />
-                      ) : (
-                        <SkillRow
-                          skill={skill}
-                          gradientClass={gradient}
-                          isAdmin={isAdmin}
-                          onEdit={s => setEditingId(s.id)}
-                          onDelete={handleDelete}
-                        />
-                      )}
-                    </div>
-                  )) : (
-                    <p className="text-xs text-slate-400 dark:text-gray-500 italic">No skills in this category</p>
-                  )}
+              return (
+                <div key={category} className="glass-card rounded-[2rem] p-6 sm:p-7">
+                  <div className="mb-6 flex items-center justify-between gap-3 border-b border-slate-200/70 pb-4 dark:border-white/10">
+                    <h3 className="font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white">{category}</h3>
+                    <span className="inline-flex min-w-9 items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+                      {list.length}
+                    </span>
+                  </div>
+
+                  <div className="space-y-5">
+                    {list.length > 0 ? (
+                      list.map(skill => (
+                        <div key={skill.id}>
+                          {editingId === skill.id ? (
+                            <InlineEditForm skill={skill} onSave={handleUpdate} onCancel={() => setEditingId(null)} />
+                          ) : (
+                            <SkillRow
+                              skill={skill}
+                              gradientClass={gradient}
+                              isAdmin={isAdmin}
+                              onEdit={setEditingId}
+                              onDelete={handleDelete}
+                            />
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm italic text-slate-500 dark:text-slate-400">No skills in this category yet.</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

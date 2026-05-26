@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,7 +11,7 @@ import LoginModal from './components/LoginModal';
 import { api } from './api';
 
 function App() {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(() => api.isAuthenticated());
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -22,37 +22,29 @@ function App() {
   });
 
   useEffect(() => {
-    setIsAdmin(api.isAuthenticated());
-  }, []);
-
-  useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+
     localStorage.setItem('theme', theme);
   }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-  };
 
   const handleLoginSuccess = () => {
     setIsAdmin(true);
   };
 
   return (
-    <div className="min-h-screen font-sans transition-colors duration-300 selection:bg-violet-500/30 selection:text-white text-slate-900 dark:text-gray-100 overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden font-sans text-slate-900 transition-colors duration-300 dark:text-slate-100">
       <Navbar
         isAdmin={isAdmin}
         setIsAdmin={setIsAdmin}
         onOpenLogin={() => setIsLoginOpen(true)}
         theme={theme}
-        toggleTheme={toggleTheme}
+        toggleTheme={() => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))}
       />
 
-      {/* Main content — full width, no horizontal padding/max-w here */}
       <main>
         <Hero />
         <About />
