@@ -164,7 +164,7 @@ export default function ChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.96 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed bottom-24 right-4 z-50 w-[calc(100vw-2rem)] max-w-[24rem] sm:right-6 sm:max-w-[25rem] lg:max-w-[26rem]"
+            className="fixed bottom-20 right-4 top-20 z-50 w-[calc(100vw-2rem)] max-w-[24rem] sm:right-6 sm:max-w-[25rem] lg:max-w-[26rem]"
           >
             <div className="rounded-[1.9rem] bg-gradient-to-r from-violet-500/45 via-fuchsia-500/35 to-cyan-400/35 p-[1px] shadow-[0_22px_80px_-32px_rgba(76,29,149,0.8)]">
               <div className="relative overflow-hidden rounded-[1.85rem] border border-white/8 bg-slate-950/92 backdrop-blur-xl">
@@ -229,7 +229,7 @@ export default function ChatAssistant() {
                   </div>
                 </div>
 
-                <div className="max-h-[24rem] overflow-y-auto px-4 py-4 sm:px-5">
+                <div className="max-h-[55vh] overflow-y-auto px-4 py-4 sm:px-5">
                   <div className="space-y-3">
                     {messages.map(message => (
                       <ChatMessage key={message.id} message={message} />

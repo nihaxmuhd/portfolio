@@ -40,11 +40,31 @@ export default function Navbar({ isAdmin, setIsAdmin, onOpenLogin, theme, toggle
   }, [isOpen]);
 
   const handleLogout = () => {
+  try {
     api.logout();
+
+    localStorage.removeItem(
+      "authToken"
+    );
+
+    localStorage.removeItem(
+      "authUsername"
+    );
+
+    sessionStorage.clear();
+
     setIsAdmin(false);
     setIsOpen(false);
-  };
 
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  } catch (error) {
+    console.error(error);
+
+    window.location.reload();
+  }
+};
   return (
     <>
       <nav

@@ -61,30 +61,30 @@ export default function Hero() {
   ] = useState(0);
 
   const experienceYears =
-    useMemo(() => {
-      const start =
-        new Date(
-          CAREER_START_DATE
-        );
-
-      const now =
-        new Date();
-
-      const diffInMs =
-        now - start;
-
-      const years =
-        diffInMs /
-        (1000 *
-          60 *
-          60 *
-          24 *
-          365.25);
-
-      return years.toFixed(
-        1
+  useMemo(() => {
+    const start =
+      new Date(
+        CAREER_START_DATE
       );
-    }, []);
+
+    const now =
+      new Date();
+
+    const diffInMs =
+      now - start;
+
+    const years =
+      diffInMs /
+      (1000 *
+        60 *
+        60 *
+        24 *
+        365.25);
+
+    return Number(
+      years.toFixed(1)
+    );
+  });
 
   useEffect(() => {
     const loadHeroData =
@@ -104,21 +104,20 @@ export default function Hero() {
             );
 
           setProjectsCount(
-            Array.isArray(
-              projects
-            )
-              ? projects.length
-              : 0
-          );
+              Array.isArray(projects)
+                ? projects.length
+                : Array.isArray(projects?.results)
+                ? projects.results.length
+                : 0
+            );
 
           setSkillsCount(
-            Array.isArray(
-              skills
-            )
+            Array.isArray(skills)
               ? skills.length
+              : Array.isArray(skills?.results)
+              ? skills.results.length
               : 0
           );
-
           if (
             Array.isArray(
               resume

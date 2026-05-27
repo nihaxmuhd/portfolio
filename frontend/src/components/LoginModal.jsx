@@ -16,11 +16,21 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     setLoading(true);
 
     try {
-      await api.login(username, password);
+      await api.login(
+        username,
+        password
+      );
+
       onLoginSuccess();
+
+      setUsername("");
+      setPassword("");
+
       onClose();
-      setUsername('');
-      setPassword('');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     } catch (err) {
       setError(err.message || 'Invalid username or password');
     } finally {
